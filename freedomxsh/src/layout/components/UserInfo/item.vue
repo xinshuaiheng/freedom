@@ -1,17 +1,22 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-04-15 15:27:43
+ * @LastEditTime: 2021-04-22 10:19:33
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \freedomxsh\src\layout\components\UserInfo\item.vue
+-->
 <template>
   <div class="detail-row">
     <div class="detail-row-name">{{ name }}</div>
-    <div
-      class="detail-row-info"
-      :class="{'edit': isEdit}"
-    >
+    <div class="detail-row-info" :class="{ edit: isEdit }">
       <template v-if="!isEdit">
         {{ value }}
       </template>
       <template v-else>
         <el-input
-          size="mini"
           v-model="inputValue"
+          size="mini"
           :placeholder="`请输入${name}`"
           @input="onInput"
         ></el-input>
@@ -25,40 +30,35 @@ export default {
   props: {
     name: {
       type: String,
-      default: ''
+      default: "",
     },
     value: {
       type: String,
-      default: ''
+      default: "",
     },
     isEdit: {
       type: Boolean,
-      default: false
+      default: false,
     },
-    tagList: {
-      type: Array,
-      default () {
-        return [];
-      }
-    }
+  },
+  data() {
+    return {
+      inputValue: this.value,
+    };
   },
   watch: {
-    isEdit (newVal) {
+    isEdit(newVal) {
       if (newVal) {
         this.inputValue = this.value;
       }
-    }
+    },
   },
-  data () {
-    return {
-      inputValue: this.value
-    };
-  },
+
   methods: {
-    onInput (value) {
-      this.$emit('on-input', this.inputValue);
-    }
-  }
+    onInput(value) {
+      this.$emit("on-input", this.inputValue);
+    },
+  },
 };
 </script>
 

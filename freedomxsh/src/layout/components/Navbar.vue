@@ -1,25 +1,43 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-04-15 15:27:43
+ * @LastEditTime: 2021-04-21 16:26:18
+ * @LastEditors: Please set LastEditors
+ * @Description: 右上角用户操作界面
+ * @FilePath: \freedomxsh\src\layout\components\Navbar.vue
+-->
+<!--
+  * hamburger       左侧控制菜单收缩的按钮组件 toggleSideBar是他的点击事件   
+  * breadcrumb      面包屑组件  根据当前活跃的路由的id查询是否又父级路由并且返回到面包屑上
+  * el-dropdown      element的下拉选择组件     placement 出现位置   command 点击回调
+  * svg-icon         element的svg组件
+-->
+
 <template>
   <div class="navbar">
-    <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+    <hamburger
+      id="hamburger-containerbtn"
+      :is-active="sidebar.opened"
+      class="hamburger-container"
+      @toggleClick="toggleSideBar"
+    />
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
-    <div class="right-menu">
-      <el-dropdown placement="bottom-end" class="avatar-container right-menu-item hover-effect" @command="handleCommand">
+    <div>
+      <el-dropdown
+        placement="bottom-end"
+        class="avatar-container right-menu-item hover-effect"
+        @command="handeCommand"
+      >
         <div class="user">
           <svg-icon icon-class="user" className="icon" />
           <span class="name">{{ userInfo.name || userInfo.companyName }}</span>
           <i class="el-icon-caret-bottom" />
         </div>
-        <!-- <div class="avatar-wrapper"> -->
-        <!-- <img
-            src="../../assets/images/f778738c-e4f8-4870-b634-56703b4acafe.gif"
-            class="user-avatar"
-          > -->
-        <!-- <span>{{ userInfo.name || userInfo.companyName }}</span>
-          <i class="el-icon-caret-bottom" />
-        </div> -->
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="info">个人信息</el-dropdown-item>
-          <el-dropdown-item v-if="userInfo.type === 3" command="company">公司信息</el-dropdown-item>
+          <el-dropdown-item v-if="userInfo.type === 3" command="company"
+            >公司信息</el-dropdown-item
+          >
           <el-dropdown-item command="password">修改密码</el-dropdown-item>
           <el-dropdown-item command="logout">退出登录</el-dropdown-item>
         </el-dropdown-menu>
@@ -32,12 +50,12 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import Breadcrumb from '@/components/Breadcrumb';
-import Hamburger from '@/components/Hamburger';
-import EditPwd from './EditPwd';
-import UserInfo from './UserInfo';
-import CompanyInfo from './CompanyInfo';
+import { mapGetters } from "vuex";
+import Breadcrumb from "@/components/Breadcrumb";
+import Hamburger from "@/components/Hamburger";
+import EditPwd from "./EditPwd";
+import UserInfo from "./UserInfo";
+import CompanyInfo from "./CompanyInfo";
 
 export default {
   components: {
@@ -45,74 +63,73 @@ export default {
     Hamburger,
     EditPwd,
     UserInfo,
-    CompanyInfo
+    CompanyInfo,
   },
   data() {
     return {
+      // 控制用户修改页面
       showInfo: false,
-      showCompanyInfo: false
+      // 控制公司修改显示
+      showCompanyInfo: false,
     };
   },
   computed: {
-    ...mapGetters(['sidebar', 'userInfo'])
+    ...mapGetters(["sidebar", "userInfo"]),
   },
   methods: {
     toggleSideBar() {
-      this.$store.dispatch('app/toggleSideBar');
+      this.$store.dispatch("app/toggleSideBar");
     },
     async logout() {
       this.$msgbox({
-        title: '提示',
-        message: '确定登出吗?',
+        title: "提示",
+        message: "确认登出吗？",
+        // 是否显示取消按钮
         showCancelButton: true,
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+        confirmButtonText: "确认",
+        cancelButtonText: "取消",
         showClose: false,
         beforeClose: async (action, instance, done) => {
-          if (action === 'confirm') {
+          if (action === "confirm") {
             instance.confirmButtonLoading = true;
             instance.showCancelButton = false;
             instance.closeOnClickModal = false;
-            instance.confirmButtonText = '登出中...';
-            await this.$store.dispatch('user/logout');
-            this.$router.push(`/login`);
+            // 删除token以及登入权限
+            await this.$store.dispatch("user/logout");
+            this.$router.push("/login");
             done();
-            instance.confirmButtonLoading = false;
           } else {
             done();
           }
-        }
-      })
-        .then(action => {})
-        .catch(action => {});
-      // this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+        },
+      });
     },
     handleCommand(command) {
       switch (command) {
-        case 'info':
+        case "info":
           this.showInfo = true;
           break;
-        case 'company':
+        case "company":
           this.showCompanyInfo = true;
           break;
-        case 'logout':
+        case "logout":
           this.logout();
           break;
-        case 'password':
-          this.$store.dispatch('user/showEditPwd', true);
+        case "password":
+          this.$store.dispatch("user/showEditPwd", true);
           break;
       }
     },
+    // 修改密码后的回调
     async handleSuccess() {
-      await this.$store.dispatch('user/logout');
+      await this.$store.dispatch("user/logout");
       this.$router.push(`/login`);
-    }
-  }
+    },
+  },
 };
 </script>
-
 <style lang="scss" scoped>
-@import '~@/assets/styles/mixin.scss';
+@import "~@/assets/styles/mixin.scss";
 .navbar {
   height: 50px;
   overflow: hidden;

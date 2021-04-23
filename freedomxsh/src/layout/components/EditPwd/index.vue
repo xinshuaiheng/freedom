@@ -1,75 +1,90 @@
-<template>
-  <el-dialog
-    title="修改密码"
-    :width="mobile ? '90%' : '700px'"
-    :top="mobile ? '5vh' : '15vh'"
-    append-to-body
-    :visible="showEditPwd"
-    :show-close="false"
-    :close-on-click-modal="false"
-    :close-on-press-escape="false"
-    @close="handleDialogClose"
-  >
-    <el-form
-      :model="model"
-      status-icon
-      :rules="rules"
-      ref="form"
-      label-width="100px"
-      :label-position="mobile ? 'top' : 'right'"
-    >
-      <el-form-item label="原密码" prop="oldPassword">
-        <el-input
-          type="password"
-          v-model="model.oldPassword"
-          placeholder="请输入原密码"
-          autocomplete="off"
-        ></el-input>
-      </el-form-item>
-      <el-form-item label="新密码" prop="newPassword">
-        <el-input
-          type="password"
-          v-model="model.newPassword"
-          placeholder="新密码：8-16位数字、字母或符号的两者结合"
-          autocomplete="off"
-        ></el-input>
-      </el-form-item>
-      <el-form-item label="确认新密码" prop="confirmPassword">
-        <el-input
-          type="password"
-          v-model="model.confirmPassword"
-          placeholder="请再次输入新密码"
-          autocomplete="off"
-        ></el-input>
-      </el-form-item>
-      <el-form-item v-if="userInfo.isInitPwd === 1">
-        <p style="color: red; margin: 0">
-          初使密码过于简单，请修改密码后重新登录！
-        </p>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" :loading="loading" @click="submitForm('form')"
-          >提交</el-button
-        >
-        <el-button :disabled="isDisabled" @click="handleDialogClose"
-          >取消</el-button
-        >
-      </el-form-item>
-    </el-form>
-  </el-dialog>
-</template>
+<!--
+ * @Author: your name
+ * @Date: 2021-04-15 15:27:43
+ * @LastEditTime: 2021-04-22 10:19:00
+ * @LastEditors: Please set LastEditors
+ * @Description: 修改密码组件
+ * @FilePath: \freedomxsh\src\layout\components\EditPwd\index.vue
+ * vh  是相对于试图的一种百分比形式
+-->
 
+<template>
+  <div>
+    <el-dialog
+      title="修改密码"
+      :width="mobile ? '90%' : '700px'"
+      :top="mobile ? '5vh' : '15vh'"
+      append-to-body
+      :visible="showEditPwd"
+      show-close="ture"
+      close-on-click-modal="false"
+      close-on-press-escape="false"
+      @close="handleDialogClose"
+    >
+      <el-form
+        ref="form"
+        :model="model"
+        status-icon
+        :rules="rules"
+        label-width="100px"
+        :label-position="mobile ? 'top' : 'right'"
+      >
+        <el-form-item label="原密码" prop="oldPassword">
+          <el-input
+            v-model="model.oldPassword"
+            type="password"
+            placeholder="请输入密码"
+            auto-complete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="新密码" prop="newPassword">
+          <el-input
+            v-model="model.newPassword"
+            type="password"
+            placeholder="新密码：8-16位数字、字母或符号的两者结合"
+            auto-complete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="确认新密码" prop="confirmPassword">
+          <el-input
+            v-model="model.confirmPassword"
+            type="password"
+            placeholder="请再次输入新密码"
+            auto-complete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item v-if="userInfo.isInitPwd === 1">
+          <p style="color: red; margin: 0">
+            初始密码过于简单,请修改密码后重新登入
+          </p>
+        </el-form-item>
+        <el-form-item>
+          <el-button
+            type="primary"
+            :loading="loading"
+            @click="submitForm('form')"
+          ></el-button>
+          <el-button
+            :disabled="isDisabled"
+            @click="handleDialogClose"
+          ></el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+  </div>
+</template>
 <script>
 import { mapGetters } from "vuex";
 import { editPassword } from "@/api/user";
+
 export default {
   data() {
-    let validatePass = (rule, value, callback) => {
+    let validatePass = (value, callback) => {
       if (value === "") {
-        callback(new Error("请输入新密码"));
+        callback(new Error("请输入密码"));
       } else {
         if (this.model.newPassword !== "") {
-          this.$refs.form.validateField("confirmPassword");
+          this.$ref.form.validateField("confirmPassword");
         }
         callback();
       }
@@ -88,53 +103,54 @@ export default {
       model: {
         oldPassword: "",
         newPassword: "",
-        confirmPassword: ""
+        confirmPassword: "",
       },
       rules: {
         oldPassword: [
-          { required: true, message: "请输入原密码", trigger: "blur" }
+          { required: true, message: "请输入原密码", trigger: "blur" },
         ],
         newPassword: [
           {
             required: true,
             validator: validatePass,
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             message: "密码必须是8-16位数字、字母或符号的两者结合",
             // pattern: /((?=.*\d)(?=.*\D)|(?=.*[a-zA-Z])(?=.*[^a-zA-Z]))(?!^.*[\u4E00-\u9FA5].*$)^\S{8,16}$/,
-            trigger: ["blur"]
-          }
+            trigger: ["blur"],
+          },
         ],
         confirmPassword: [
-          { required: true, validator: validatePass2, trigger: "blur" }
-        ]
-      }
+          { required: true, validator: validatePass2, trigger: "blur" },
+        ],
+      },
     };
   },
   computed: {
     ...mapGetters(["showEditPwd", "userInfo"]),
     isDisabled() {
       return this.loading || this.userInfo.isInitPwd === 1;
-    }
+    },
   },
   watch: {
+    // 每次开关有变化都椒盐虾整个表单
     showEditPwd() {
-      this.$refs.form && this.$refs.form.resetFields();
-    }
+      this.$refs.from && this.$refs.form.resetFields();
+    },
   },
   methods: {
     submitForm(formName) {
-      this.$refs[formName].validate(async valid => {
+      this.$refs[formName].validate(async (valid) => {
         if (valid) {
           this.loading = true;
           try {
             const { msg } = await editPassword(this.model);
             this.loading = false;
-            this.$message.success(`${msg}, 请重新登录！`);
+            this.$message.success(`${msg},请重新登入`);
             this.handleDialogClose();
             this.$emit("on-success");
-          } catch (error) {
+          } catch {
             this.loading = false;
           }
         } else {
@@ -145,11 +161,10 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
+    // 修改密码保存在vuex
     handleDialogClose() {
       this.$store.dispatch("user/showEditPwd", false);
-    }
-  }
+    },
+  },
 };
 </script>
-
-<style lang="scss"></style>

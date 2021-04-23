@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-04-15 11:10:21
- * @LastEditTime: 2021-04-15 14:39:12
+ * @LastEditTime: 2021-04-21 16:23:42
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \freedomxsh\src\store\modules\user.js
@@ -78,6 +78,28 @@ const actions={
   },
   showEditPwd ({ commit }, value) {
     commit('SET_SHOW_EDIT_PWD', value);
+  },
+  logout({commit}){
+    return new Promise ((resolve,reject)=>{
+      if(!getToken()){
+        commit('SET_TOKEN', '');
+        commit('SET_IS_GET_PERMISSION', false);
+        removeToken()
+        resetRouter()
+        resolve()
+        return
+      }
+       login().then(()=>{
+        commit('SET_TOKEN', '');
+        commit('SET_IS_GET_PERMISSION', false);
+        removeToken()
+        resetRouter()
+        resolve()
+       })
+       .catch(error => {
+        reject(error);
+      });
+    })
   }
 }
 
