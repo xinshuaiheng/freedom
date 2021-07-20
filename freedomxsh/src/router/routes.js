@@ -1,12 +1,3 @@
-/*
- * @Author: your name
- * @Date: 2021-04-14 19:21:15
- * @LastEditTime: 2021-04-15 15:28:17
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \freedomxsh\src\router\routes.js
- */
-
 import Layout from '@/layout'
 export default [
   {
@@ -35,4 +26,16 @@ export default [
       }
     ]
   }
+  // {
+  //   path: '/',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'editor',
+  //       component: () => import('@/views/editor'),
+  //       name: 'editor',
+  //       meta: { title: '代码编辑', icon: 'code' }
+  //     }
+  //   ]
+  // }
 ]

@@ -1,52 +1,18 @@
 <template>
-  <div
-    class="table-content"
-    ref="content"
-    :style="styles"
-  >
-    <el-table
-      v-loading="loading"
-      v-bind="$attrs"
-      v-on="$listeners"
-      ref="table"
-      :height="tableHeight"
-      class="base-table"
-      style="width: 100%; font-size: 12px;"
-      @row-click="handleRowClick"
-    >
+  <div ref="content" class="table-content" :style="styles">
+    <el-table ref="table" v-loading="loading" v-bind="$attrs" :height="tableHeight" class="base-table" style="width: 100%; font-size: 12px;" v-on="$listeners" @row-click="handleRowClick">
       <template v-for="(col, index) in columns">
-        <el-table-column
-          v-if="'render' in col"
-          v-bind="col.attrs || col || {}"
-          :align="col.align || 'center'"
-          :key="`${index}-${col.prop}`"
-        >
+        <el-table-column v-if="'render' in col" :key="`${index}-${col.prop}`" v-bind="col.attrs || col || {}" :align="col.align || 'center'">
           <template slot-scope="scope">
-            <Render
-              :scope="scope"
-              :render="col.render"
-            ></Render>
+            <Render :scope="scope" :render="col.render"></Render>
           </template>
         </el-table-column>
-        <el-table-column
-          v-else-if="'slot' in col"
-          v-bind="col.attrs || col || {}"
-          :align="col.align || 'center'"
-          :key="`${index}-${col.prop}`"
-        >
+        <el-table-column v-else-if="'slot' in col" :key="`${index}-${col.prop}`" v-bind="col.attrs || col || {}" :align="col.align || 'center'">
           <template slot-scope="scope">
-            <slot
-              :name="col.slot"
-              :scope="scope"
-            />
+            <slot :name="col.slot" :scope="scope" />
           </template>
         </el-table-column>
-        <el-table-column
-          v-else
-          v-bind="col.attrs || col || {}"
-          :align="col.align || 'center'"
-          :key="`${index}-${col.prop}`"
-        />
+        <el-table-column v-else :key="`${index}-${col.prop}`" v-bind="col.attrs || col || {}" :align="col.align || 'center'" />
       </template>
     </el-table>
     <slot />
@@ -58,6 +24,7 @@ import { getPoint } from '@/utils/common';
 export default {
   name: 'BaseTable',
   components: { Render },
+  inheritAttrs: false,
   props: {
     loading: {
       type: Boolean,
@@ -80,13 +47,13 @@ export default {
       default: false
     }
   },
-  data () {
+  data() {
     return {
       height: null
     };
   },
   computed: {
-    tableHeight () {
+    tableHeight() {
       if (this.isMobile) {
         return null;
       }
@@ -100,33 +67,33 @@ export default {
         return this.height;
       }
     },
-    styles () {
+    styles() {
       return this.isMobile || this.tHeight > 0
         ? {}
         : {
-          height: this.height + 'px',
-          minHeight: '400px'
-        };
+            height: this.height + 'px',
+            minHeight: '400px'
+          };
     }
   },
-  inheritAttrs: false,
-  mounted () {
+  mounted() {
     if (!this.isMobile) {
       this.resizeHandler();
       window.addEventListener('resize', this.resizeHandler);
     }
   },
-  beforeDestroy () {
+  beforeDestroy() {
     if (!this.isMobile) {
       window.removeEventListener('resize', this.resizeHandler);
     }
   },
   methods: {
-    handleRowClick (row, column, event) {
+    handleRowClick(row, column, event) {
+      alert(11);
       this.$refs.table.toggleRowSelection(row);
       this.$emit('on-row-click', row, column, event);
     },
-    resizeHandler () {
+    resizeHandler() {
       let height = window.innerHeight - getPoint(this.$refs.content) - 20;
       this.height = height > 400 ? height : 400;
     }

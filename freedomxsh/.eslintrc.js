@@ -1,11 +1,3 @@
-/*
- * @Author: your name
- * @Date: 2021-04-13 14:01:14
- * @LastEditTime: 2021-04-13 15:31:54
- * @LastEditors: your name
- * @Description: In User Settings Edit
- * @FilePath: \freedom\freedomxsh\.eslintrc.js
- */
 module.exports = {
   root: true,
   parserOptions: {

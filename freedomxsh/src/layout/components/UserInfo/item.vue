@@ -1,10 +1,10 @@
 <!--
  * @Author: your name
- * @Date: 2021-04-15 15:27:43
- * @LastEditTime: 2021-04-22 10:19:33
- * @LastEditors: your name
+ * @Date: 2021-04-06 16:32:15
+ * @LastEditTime: 2021-04-22 10:15:29
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: \freedomxsh\src\layout\components\UserInfo\item.vue
+ * @FilePath: \vue-rbac-admin\src\layout\components\UserInfo\item.vue
 -->
 <template>
   <div class="detail-row">
@@ -14,12 +14,7 @@
         {{ value }}
       </template>
       <template v-else>
-        <el-input
-          v-model="inputValue"
-          size="mini"
-          :placeholder="`请输入${name}`"
-          @input="onInput"
-        ></el-input>
+        <el-input v-model="inputValue" size="mini" :placeholder="`请输入${name}`" @input="onInput"></el-input>
       </template>
     </div>
   </div>
@@ -30,20 +25,26 @@ export default {
   props: {
     name: {
       type: String,
-      default: "",
+      default: ''
     },
     value: {
       type: String,
-      default: "",
+      default: ''
     },
     isEdit: {
       type: Boolean,
-      default: false,
+      default: false
     },
+    tagList: {
+      type: Array,
+      default() {
+        return [];
+      }
+    }
   },
   data() {
     return {
-      inputValue: this.value,
+      inputValue: this.value
     };
   },
   watch: {
@@ -51,14 +52,13 @@ export default {
       if (newVal) {
         this.inputValue = this.value;
       }
-    },
+    }
   },
-
   methods: {
     onInput(value) {
-      this.$emit("on-input", this.inputValue);
-    },
-  },
+      this.$emit('on-input', this.inputValue);
+    }
+  }
 };
 </script>
 

@@ -1,16 +1,9 @@
 <template>
-  <div
-    :class="classObj"
-    class="app-wrapper"
-  >
-    <div
-      v-if="device==='mobile'&&sidebar.opened"
-      class="drawer-bg"
-      @click="handleClickOutside"
-    />
+  <div :class="classObj" class="app-wrapper">
+    <div v-if="device === 'mobile' && sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
     <sidebar class="sidebar-container" />
     <div class="main-container">
-      <div :class="{'fixed-header':fixedHeader}">
+      <div :class="{ 'fixed-header': fixedHeader }">
         <navbar />
       </div>
       <app-main />
@@ -40,7 +33,7 @@ export default {
       device: state => state.app.device,
       fixedHeader: state => state.settings.fixedHeader
     }),
-    classObj () {
+    classObj() {
       return {
         hideSidebar: !this.sidebar.opened,
         openSidebar: this.sidebar.opened,
@@ -50,7 +43,7 @@ export default {
     }
   },
   methods: {
-    handleClickOutside () {
+    handleClickOutside() {
       this.$store.dispatch('app/closeSideBar', { withoutAnimation: false });
     }
   }
@@ -58,8 +51,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@/assets/styles/mixin.scss";
-@import "~@/assets/styles/variables.scss";
+@import '~@/assets/styles/mixin.scss';
+@import '~@/assets/styles/variables.scss';
 
 .app-wrapper {
   @include clearfix;

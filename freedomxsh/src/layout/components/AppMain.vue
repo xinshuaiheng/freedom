@@ -1,19 +1,10 @@
 <!--
  * @Author: your name
- * @Date: 2021-04-15 15:27:43
- * @LastEditTime: 2021-04-23 16:33:52
+ * @Date: 2021-04-06 16:32:15
+ * @LastEditTime: 2021-04-23 10:56:10
  * @LastEditors: your name
  * @Description: In User Settings Edit
- * @FilePath: \freedomxsh\src\layout\components\AppMain.vue
--->
-<!--
- * @Author: your name
- * @Date: 2021-04-15 15:27:43
- * @LastEditTime: 2021-04-22 10:24:41
- * @LastEditors: your name
- * @Description: In User Settings Edit
- * @FilePath: \freedomxsh\src\layout\components\AppMain.vue
- * transition  element的组件 是有个过度动画
+ * @FilePath: \vue-rbac-admin\src\layout\components\AppMain.vue
 -->
 <template>
   <section id="app-main" class="app-main">
@@ -30,7 +21,7 @@
 
 <script>
 export default {
-  name: "AppMain",
+  name: 'AppMain'
 };
 </script>
 

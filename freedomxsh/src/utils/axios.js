@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2021-04-06 16:32:15
+ * @LastEditTime: 2021-04-16 15:18:10
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \vue-rbac-admin\src\utils\axios.js
+ */
 import axios from 'axios';
 import NProgress from 'nprogress';
 // import store from '../store';
@@ -47,7 +55,7 @@ class HttpRequest {
           // console.log(data);
           const str = JSON.stringify(data);
           config.data = encryptRsa(str);
-          console.log(config,'axios参数修改','-5')
+          console.log(config,'axios参数修改初始登入','-5')
         }
         return config;
       },

@@ -1,23 +1,19 @@
 <!--
  * @Author: your name
  * @Date: 2021-04-15 15:17:57
- * @LastEditTime: 2021-04-21 10:45:14
+ * @LastEditTime: 2021-07-20 16:28:27
  * @LastEditors: Please set LastEditors
  * @Description: 面包屑
  * @FilePath: \freedomxsh\src\components\Breadcrumb\index.vue
 -->
 
 <template>
-  <el-breadcrumb>
+  <el-breadcrumb class="app-breadcrumb" separator="/">
     <transition-group name="breadcrumb">
       <el-breadcrumb-item v-if="routerName !== 'dashboard'" :key="routerName">
         <a class="home" @click.prevent="handleLink('dashboard')">首页</a>
       </el-breadcrumb-item>
-
-      <el-breadcrumb-item
-        v-for="(item, index) in levelList"
-        :key="`${index}-${item}`"
-      >
+      <el-breadcrumb-item v-for="(item, index) in levelList" :key="`${index}-${item}`">
         <span class="no-redirect">{{ item }}</span>
       </el-breadcrumb-item>
     </transition-group>
@@ -25,7 +21,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex';
 const { body } = document;
 const WIDTH = 992;
 export default {
@@ -43,22 +39,28 @@ export default {
       // 获取有权限的路由数组
       menus: [],
       // 当前路由的名字
-      routerName: "",
+      routerName: '',
     };
   },
   computed: {
     // 获取到登入时存得路由信息
-    ...mapGetters(["sourceMenus"]),
+    ...mapGetters(['sourceMenus']),
   },
   watch: {
     // 每一次跳转路由都监听当前路由信息
     $route(route) {
       this.routerName = route.name;
+      console.log(this.routerName, '545741451354645');
       this.getBreadcrumb();
     },
   },
   created() {
     this.getBreadcrumb();
+  },
+  mounted() {
+    alert(1);
+    console.log(this.sourceMenus, '875w7sdawds5');
+    console.log(this.routerName);
   },
   methods: {
     getBreadcrumb() {
@@ -69,14 +71,10 @@ export default {
       if (menu) {
         // 说明他不是首页不是父级路由
         this.findParent(menu);
-        this.levelList = this.menus
-          .filter((item) => item.breadcrumb !== false)
-          .map((y) => y.name);
+        this.levelList = this.menus.filter((item) => item.breadcrumb !== false).map((y) => y.name);
       } else {
         // 说明他是首页，需要从路由路径记录寻找
-        this.levelList = this.$route.matched
-          .filter((item) => item.breadcrumb !== false && item.meta.title)
-          .map((x) => x.meta.title);
+        this.levelList = this.$route.matched.filter((item) => item.breadcrumb !== false && item.meta.title).map((x) => x.meta.title);
       }
       let length = this.levelList.length;
       // 如果面包屑长度超宽或者大于2
@@ -84,8 +82,9 @@ export default {
         this.levelList = [this.levelList[0], this.levelList[length - 1]];
       }
     },
-    // 根据路由数组来寻找当前路由的父级路由值到招标不到为止          pid为父级路由ID
+
     findParent(menu) {
+      console.log(menu);
       let parent = this.sourceMenus.find((x) => x.id === menu.pid);
       this.menus.push(parent);
       this.findParent(parent);

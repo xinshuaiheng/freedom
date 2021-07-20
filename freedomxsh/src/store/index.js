@@ -1,16 +1,10 @@
-/*
- * @Author: your name
- * @Date: 2021-04-13 14:01:14
- * @LastEditTime: 2021-04-15 14:38:06
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \freedomxsh\src\store\index.js
- */
-import Vue from "vue";
-import Vuex from "vuex";
-import getters from "./getters"
-Vue.use(Vuex);
+import Vue from 'vue'
+import Vuex from 'vuex'
+import getters from './getters'
 
+Vue.use(Vuex)
+
+// https://webpack.js.org/guides/dependency-management/#requirecontext
 const modulesFiles = require.context('./modules', true, /\.js$/)
 
 // you do not need `import app from './modules/app'`
@@ -22,8 +16,10 @@ const modules = modulesFiles.keys().reduce((modules, modulePath) => {
   modules[moduleName] = value.default
   return modules
 }, {})
-const store1 = new Vuex.Store({
-  getters,
-  modules
+
+const store = new Vuex.Store({
+  modules,
+  getters
 })
-export default store1
+
+export default store

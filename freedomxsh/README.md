@@ -1,24 +1,31 @@
-# freedomxsh
+# RBAC 权限管理系统前端
 
-## Project setup
-```
-npm install
-```
+本项目前端使用 vue 和 element-ui 开发，前端路由、按钮权限控制、操作数据加密传输。
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+配套 node 后端
 
-### Compiles and minifies for production
-```
-npm run build
+## 安装依赖
+
+```bash
+$ yarn
 ```
 
-### Lints and fixes files
-```
-npm run lint
+## 启动项目
+
+```bash
+$ yarn run serve
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+如果启动了配套后端， 超级管理员账号：admin 密码：1
+
+## 打包项目
+
+```
+yarn run build
+```
+
+## License
+
+[MIT](LICENSE)
+
+---

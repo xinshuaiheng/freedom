@@ -1,37 +1,17 @@
-/*
- * @Author: your name
- * @Date: 2021-04-13 14:06:42
- * @LastEditTime: 2021-04-15 15:09:22
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \freedom\freedomxsh\vue.config.js
- */
-
 'use strict';
-// 引入node api
-const path = require('path')
-// 减少打包资源插件
-const CompressionPlugin = require('compression-webpack-plugin')
+const path = require('path');
+const CompressionPlugin = require('compression-webpack-plugin');
 
-// 拼接一个当前路径
-function resolve (dir){
-  return path.join(__dirname,dir)
+function resolve (dir) {
+  return path.join(__dirname, dir);
 }
 module.exports = {
-  // hot: true, // 热加载
-
-  // 所有路径加个根路径
-  publicPath:'./',
-  // 打包文件
-  outputDir:'dist',
-  // 静态文件
-  assetsDir:'static',
-  
+  publicPath: '/',
+  outputDir: 'dist',
+  assetsDir: 'static',
   runtimeCompiler: true,
-  // eslint 是否在保存的时候交谈
-  lintOnSave:false,
-  // 是否开启sourcemap文件 就是控制台定位代码位置哪行的
-  productionSourceMap:false,
+  lintOnSave: process.env.NODE_ENV === 'development',
+  productionSourceMap: false,
   devServer: {
     proxy: {
       '/admin': {
@@ -69,18 +49,20 @@ module.exports = {
       }
     }
   },
-   // 可以合拼webpack配置之  在里面进行添加修改删除 接受类型可以是对象可以是fun
-   configureWebpack: config=>{
-        plugins:[
+  configureWebpack: config => {
+    if (process.env.NODE_ENV === 'production') {
+      return {
+        plugins: [
           new CompressionPlugin({
             test: /\.js$|\.html$|\.css$/, // 匹配文件名
             threshold: 10240, // 对超过10k的数据压缩
             deleteOriginalAssets: false // 不删除源文件
           })
         ]
-   },
-   // 修改webpack细微配置
-   chainWebpack (config) {
+      };
+    }
+  },
+  chainWebpack (config) {
     config.plugins.delete('preload'); // TODO: need test
     config.plugins.delete('prefetch'); // TODO: need test
 
@@ -116,10 +98,10 @@ module.exports = {
       })
       .end();
 
-    // config
-    //   // https://webpack.js.org/configuration/devtool/#development
-    //   .when(process.env.NODE_ENV === 'development', config =>
-    //     config.devtool('cheap-source-map')
-    //   );
+    config
+      // https://webpack.js.org/configuration/devtool/#development
+      .when(process.env.NODE_ENV === 'development', config =>
+        config.devtool('cheap-source-map')
+      );
   }
-} 
+};

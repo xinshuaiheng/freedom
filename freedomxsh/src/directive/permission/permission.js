@@ -1,11 +1,3 @@
-/*
- * @Author: your name
- * @Date: 2021-04-15 13:25:02
- * @LastEditTime: 2021-04-15 14:07:50
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \freedomxsh\src\directive\permission\permission.js
- */
 import store from '@/store'
 
 export default {
